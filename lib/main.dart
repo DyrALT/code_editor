@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:get_it/get_it.dart';
 import 'package:note_code/bloc_tema/Tema_events.dart';
 import 'package:note_code/pages/login.dart';
 import 'package:note_code/pages/new_code.dart';
@@ -33,8 +32,12 @@ x() async {
   if (x == 0) {
     theme = temaBloc.dark;
     temaBloc.deger = true;
-  } else {
+    print("************ tema => $x");
+  }
+  if (x == 1) {
     theme = temaBloc.light;
+    print("************ tema => $x");
+
     temaBloc.deger = false;
   }
 }
@@ -71,15 +74,14 @@ class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  _MyAppState createState() {
+    print("************ CREATE STATE ÇALIŞTI");
+    x();
+    return _MyAppState();
+  }
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ThemeData>(
@@ -175,6 +177,7 @@ class _SettingsState extends State<Settings> {
               onPressed: () async {
                 await _auth.signOut();
                 print("çıkış yapıldı*****************************");
+                print(await utils.getTheme());
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(

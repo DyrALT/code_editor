@@ -23,10 +23,10 @@ class TemaBloc {
   StreamSink<ThemeData> get _temaStateSink => _temaStateStreamController.sink;
 
   final _temaEventStreamController = StreamController<TemaEvent>();
-  Stream<TemaEvent> get temaEventStream => _temaEventStreamController.stream;
+  Stream<TemaEvent> get _temaEventStream => _temaEventStreamController.stream;
   StreamSink<TemaEvent> get temaEventSink => _temaEventStreamController.sink;
   TemaBloc() {
-    temaEventStream.listen(_mapEventToState);
+    _temaEventStream.listen(_mapEventToState);
   }
 
   final utils = Utils();
@@ -35,11 +35,11 @@ class TemaBloc {
       if (deger) {
         theme = light;
         deger = false;
-        utils.saveTheme(1);
+        await utils.saveTheme(1);
       } else {
         theme = dark;
         deger = true;
-        utils.saveTheme(0);
+        await utils.saveTheme(0);
       }
     }
     _temaStateSink.add(theme);
