@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:note_code/main.dart';
+import 'package:note_code/pages/password_reset.dart';
 import 'package:note_code/pages/register.dart';
 import 'package:note_code/utils/auth.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -128,23 +129,6 @@ class _LoginState extends State<Login> {
                               ),
                               SizedBox(height: 20),
                               Container(
-                                  height: 50,
-                                  width:
-                                      MediaQuery.of(context).size.width - 150,
-                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: ElevatedButton(
-                                    child: Text('Giriş Yap',
-                                        style: TextStyle(fontSize: 20)),
-                                    style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(30)),
-                                    ))),
-                                    onPressed: _emailSifreGiris,
-                                  )),
-                              Container(
                                   child: Row(
                                 children: <Widget>[
                                   Text('henüz hesabınız yokmu?'),
@@ -164,7 +148,48 @@ class _LoginState extends State<Login> {
                                   ),
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.center,
-                              )),
+                              )
+                              ),Container(
+                                  child: Row(
+                                children: <Widget>[
+                                  Text('şifrenizi mi unuttunuz?'),
+                                  FlatButton(
+                                    textColor: Colors.blue,
+                                    child: Text(
+                                      'Şifre Sıfırla!',
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ResetPass()));
+                                    },
+                                  ),
+                                ],
+                                mainAxisAlignment: MainAxisAlignment.center,
+                              )
+                              ),
+                              SizedBox(height: 20),
+                              Container(
+                                  height: 50,
+                                  width:
+                                      MediaQuery.of(context).size.width - 150,
+                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  child: ElevatedButton(
+                                    child: Text('Giriş Yap',
+                                        style: TextStyle(fontSize: 20)),
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                    ))),
+                                    onPressed: _emailSifreGiris,
+                                  )),
+                              
                               SizedBox(height: 50),
                               Padding(
                                 padding:
