@@ -1,5 +1,6 @@
 import 'dart:async';
 import "package:flutter/material.dart";
+import 'package:note_code/models/themes.dart';
 import '../utils/utils.dart';
 import 'Tema_events.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
@@ -16,8 +17,9 @@ class TemaBloc {
       scaffoldBackgroundColor: Colors.grey.shade900,
       primaryColor: Colors.grey.shade900,
       accentColor: Colors.cyanAccent);
-  bool deger = false; //true koyu false açık
-
+  int deger = 0; //0 : Açık , 1: Koyu ...
+  String ad = "Açık";
+  var code_theme = xcodeTheme;
   final _temaStateStreamController = StreamController<ThemeData>.broadcast();
   Stream<ThemeData> get tema => _temaStateStreamController.stream;
   StreamSink<ThemeData> get _temaStateSink => _temaStateStreamController.sink;
@@ -31,16 +33,17 @@ class TemaBloc {
 
   final utils = Utils();
   void _mapEventToState(TemaEvent event) async {
-    if (event is TemaDegistirEvent) {
-      if (deger) {
-        theme = light;
-        deger = false;
-        await utils.saveTheme(1);
-      } else {
-        theme = dark;
-        deger = true;
-        await utils.saveTheme(0);
-      }
+    if (event is AcikTemaDegistirEvent) {
+      theme = light;
+      ad = "Açık";
+      code_theme = xcodeTheme;
+      await utils.saveTheme(0);
+    }
+    if (event is KoyuTemaDegistirEvent) {
+      theme = dark;
+      ad = "Koyu";
+      code_theme = monokaiSublimeTheme;
+      await utils.saveTheme(1);
     }
     _temaStateSink.add(theme);
   }

@@ -1,3 +1,4 @@
 abstract class TemaEvent{}
 
-class TemaDegistirEvent extends TemaEvent{}
+class AcikTemaDegistirEvent extends TemaEvent{}
+class KoyuTemaDegistirEvent extends TemaEvent{}

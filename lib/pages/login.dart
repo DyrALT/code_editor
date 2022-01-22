@@ -10,6 +10,40 @@ import 'package:note_code/utils/auth.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:the_validator/the_validator.dart';
 
+AuthService authService = AuthService();
+
+class AuthController extends StatefulWidget {
+  const AuthController({Key? key}) : super(key: key);
+
+  @override
+  _AuthControllerState createState() => _AuthControllerState();
+}
+
+class _AuthControllerState extends State<AuthController> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: authService.userVarmi(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final data = snapshot.data as bool;
+          if (data) {
+            WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => MyApp()));
+                });
+          } else {
+            return Login();
+          }
+        }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+}
+
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -29,12 +63,12 @@ class _LoginState extends State<Login> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      if (_auth.currentUser != null) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MyApp()));
-      }
-    });
+    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    //   if (_auth.currentUser != null) {
+    //     Navigator.pushReplacement(
+    //         context, MaterialPageRoute(builder: (context) => MyApp()));
+    //   }
+    // });
   }
 
   bool _isLoading = false;
@@ -148,8 +182,8 @@ class _LoginState extends State<Login> {
                                   ),
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.center,
-                              )
-                              ),Container(
+                              )),
+                              Container(
                                   child: Row(
                                 children: <Widget>[
                                   Text('şifrenizi mi unuttunuz?'),
@@ -169,8 +203,7 @@ class _LoginState extends State<Login> {
                                   ),
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.center,
-                              )
-                              ),
+                              )),
                               SizedBox(height: 20),
                               Container(
                                   height: 50,
@@ -189,7 +222,6 @@ class _LoginState extends State<Login> {
                                     ))),
                                     onPressed: _emailSifreGiris,
                                   )),
-                              
                               SizedBox(height: 50),
                               Padding(
                                 padding:

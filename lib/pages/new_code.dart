@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:code_text_field/code_text_field.dart';
-import 'package:flutter_highlight/themes/monokai-sublime.dart';
+import 'package:note_code/bloc_tema/Tema_bloc.dart';
 import 'package:note_code/models/Code.dart';
 import 'package:note_code/models/languages.dart';
 import 'package:note_code/main.dart';
+import 'package:note_code/models/themes.dart';
+import 'package:note_code/utils/locator.dart';
 
 class NewCode extends StatefulWidget {
   const NewCode({Key? key}) : super(key: key);
@@ -11,6 +13,8 @@ class NewCode extends StatefulWidget {
   @override
   _NewCodeState createState() => _NewCodeState();
 }
+
+final TemaBloc temaBloc = locator.get<TemaBloc>();
 
 class _NewCodeState extends State<NewCode> {
   CodeController? _codeController;
@@ -81,74 +85,17 @@ class _NewCodeState extends State<NewCode> {
   void initState() {
     _dropDownItemModel = _dropDownItemModelList[0];
     super.initState();
-    final source = """
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
-
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
-}
-
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply from: "\$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-apply plugin: 'com.google.gms.google-services'
-
-android {
-    compileSdkVersion 30
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-
-    defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.note_code"
-        minSdkVersion 16
-        targetSdkVersion 30
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
-    }
-
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
-        }
-    }
-}
-
-flutter {
-    source '../..'
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:\$kotlin_version"
-}
-
+final source = 
+"""
+class Selam:
+  def __init__(self):
+    pass
 """;
     // Instantiate the CodeController
     _codeController = CodeController(
       text: source,
-      language: gradle,
-      theme: monokaiSublimeTheme,
+      language: python,
+      theme: temaBloc.code_theme,//
     );
   }
 

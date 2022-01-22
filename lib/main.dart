@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:note_code/bloc_tema/Tema_events.dart';
+import 'package:note_code/models/themes.dart';
 import 'package:note_code/pages/login.dart';
 import 'package:note_code/pages/new_code.dart';
+import 'package:note_code/pages/settings.dart';
 import 'package:note_code/utils/locator.dart';
 import 'package:note_code/widgets/Cards.dart';
 import 'package:flutter/material.dart';
@@ -29,16 +31,17 @@ var theme;
 x() async {
   var x = await utils.getTheme();
   // theme = (x == 0) ? temaBloc.dark : temaBloc.light;
-  if (x == 0) {
-    theme = temaBloc.dark;
-    temaBloc.deger = true;
+  if (x == "Açık") {
+    theme = temaBloc.light;
+    temaBloc.ad = "Açık";
+    temaBloc.code_theme = xcodeTheme;
     print("************ tema => $x");
   }
-  if (x == 1) {
-    theme = temaBloc.light;
+  if (x == "Koyu") {
+    theme = temaBloc.dark;
+    temaBloc.ad = "Koyu";
+    temaBloc.code_theme = monokaiSublimeTheme;
     print("************ tema => $x");
-
-    temaBloc.deger = false;
   }
 }
 
@@ -61,7 +64,7 @@ class _SplashScrenState extends State<SplashScren> {
   Widget build(BuildContext context) {
     return SplashScreen(
         seconds: 5,
-        navigateAfterSeconds: Login(),
+        navigateAfterSeconds: AuthController(),
         title: new Text('Code Editor Yükleniyor'),
         backgroundColor: Colors.white,
         styleTextUnderTheLoader: new TextStyle(),
@@ -74,11 +77,7 @@ class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() {
-    print("************ CREATE STATE ÇALIŞTI");
-    x();
-    return _MyAppState();
-  }
+  _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -103,7 +102,10 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState() {
+    x();
+    return _MyHomePageState();
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -148,45 +150,6 @@ class _MyHomePageState extends State<MyHomePage> {
           Cards(title: "4"),
           Cards(title: "5"),
           Cards(title: "6"),
-        ],
-      ),
-    );
-  }
-}
-
-class Settings extends StatefulWidget {
-  const Settings({Key? key}) : super(key: key);
-
-  @override
-  _SettingsState createState() => _SettingsState();
-}
-
-class _SettingsState extends State<Settings> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Settings')),
-      body: Column(
-        children: [
-          TextButton(
-              onPressed: () {
-                temaBloc.temaEventSink.add(TemaDegistirEvent());
-              },
-              child: Text('Tema değiştir')),
-          TextButton(
-              onPressed: () async {
-                await _auth.signOut();
-                print("çıkış yapıldı*****************************");
-                print(await utils.getTheme());
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Login(),
-                  ),
-                  ModalRoute.withName('/'),
-                );
-              },
-              child: Text('Çıkış yap')),
         ],
       ),
     );
