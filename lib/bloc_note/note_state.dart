@@ -11,9 +11,9 @@ class NoteInitial extends NoteState {}
 
 class NoteLoadingState extends NoteState {}
 
-class NoteLoaded extends NoteState {
+class NoteLoadedState extends NoteState {
   late final Note note;
-  NoteLoaded({required this.note});
+  NoteLoadedState({required this.note});
 }
 
 class NoteErorState extends NoteState {}

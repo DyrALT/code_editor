@@ -27,18 +27,16 @@ final utils = Utils();
 final TemaBloc temaBloc = locator.get<TemaBloc>();
 FirebaseAuth _auth = FirebaseAuth.instance;
 
-var theme;
 x() async {
   var x = await utils.getTheme();
-  // theme = (x == 0) ? temaBloc.dark : temaBloc.light;
   if (x == "Açık") {
-    theme = temaBloc.light;
+    temaBloc.theme = temaBloc.light;
     temaBloc.ad = "Açık";
     temaBloc.code_theme = xcodeTheme;
     print("************ tema => $x");
   }
   if (x == "Koyu") {
-    theme = temaBloc.dark;
+    temaBloc.theme = temaBloc.dark;
     temaBloc.ad = "Koyu";
     temaBloc.code_theme = monokaiSublimeTheme;
     print("************ tema => $x");
@@ -84,7 +82,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ThemeData>(
-      initialData: theme,
+      initialData: temaBloc.theme,
       stream: temaBloc.tema,
       builder: (context, snapshot) {
         return MaterialApp(
@@ -139,9 +137,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ListView(
         children: [
           Cards(title: "deneme"),
-          Cards(title: "selam"),
-          Cards(title: "merahab"),
-          Cards(title: "ahahahaha"),
           Cards(title: "Main code"),
           Cards(title: "classlarım"),
           Cards(title: "1"),

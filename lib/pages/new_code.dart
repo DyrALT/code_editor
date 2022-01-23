@@ -114,6 +114,8 @@ class Selam:
           children: [
             Text(""),
             DropdownButton(
+              
+              icon: const Icon(Icons.keyboard_arrow_down),
               items: _dropDownItemModelList
                   .map((e) => DropdownMenuItem<DropDownItemModel>(
                         child: Row(

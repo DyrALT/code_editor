@@ -9,8 +9,10 @@ import 'package:note_code/pages/register.dart';
 import 'package:note_code/utils/auth.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:the_validator/the_validator.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
 AuthService authService = AuthService();
+// final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class AuthController extends StatefulWidget {
   const AuthController({Key? key}) : super(key: key);
@@ -29,16 +31,24 @@ class _AuthControllerState extends State<AuthController> {
           final data = snapshot.data as bool;
           if (data) {
             WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => MyApp()));
-                });
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyApp()),
+                  (r) => false);
+            });
           } else {
-            return Login();
+            WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => Login()),
+                  (r) => false);
+            });
           }
         }
-        return Center(
+        return Scaffold(
+            body: Center(
           child: CircularProgressIndicator(),
-        );
+        ));
       },
     );
   }
@@ -52,6 +62,7 @@ class Login extends StatefulWidget {
 }
 
 FirebaseAuth _auth = FirebaseAuth.instance;
+// final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class _LoginState extends State<Login> {
   var formKeyHatirla = GlobalKey<FormState>();
@@ -222,6 +233,25 @@ class _LoginState extends State<Login> {
                                     ))),
                                     onPressed: _emailSifreGiris,
                                   )),
+                              Container(
+                                  height: 50,
+                                  width:
+                                      MediaQuery.of(context).size.width - 150,
+                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  child: ElevatedButton(
+                                    child: Text('poop',
+                                        style: TextStyle(fontSize: 20)),
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                    ))),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  )),
                               SizedBox(height: 50),
                               Padding(
                                 padding:
@@ -273,6 +303,7 @@ class _LoginState extends State<Login> {
             .signInWithEmailAndPassword(email: _email, password: _sifre)
             .then((user) {
           if (user.user!.emailVerified == false) {
+            _auth.signOut();
             Alert(
                 context: context,
                 type: AlertType.warning,
@@ -282,15 +313,22 @@ class _LoginState extends State<Login> {
                   DialogButton(
                       child: Text('Kapat'),
                       onPressed: () {
-                        Navigator.pop(context);
+                        WidgetsBinding.instance!
+                            .addPostFrameCallback((timeStamp) {
+                          Navigator.of(context, rootNavigator: true).pop();
+                        });
                       })
                 ]).show();
             setState(() {
               _isLoading = false;
             });
           } else {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => MyApp()));
+            WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyApp()),
+                  (r) => false);
+            });
             formKey.currentState!.reset();
           }
         }).catchError((onError) {
@@ -334,8 +372,8 @@ class _LoginState extends State<Login> {
         idToken: googleAuth.idToken,
       );
       await _auth.signInWithCredential(credential);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MyApp()));
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) => MyApp()), (r) => false);
     } catch (e) {
       return null;
     }

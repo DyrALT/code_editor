@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Utils {
@@ -13,14 +11,19 @@ class Utils {
 
   Future<String?> getTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // return prefs.getInt(_PREF_THEME) ?? 0;
     if (prefs.getInt(_PREF_THEME) == 0) {
       return "Açık";
     }
     if (prefs.getInt(_PREF_THEME) == 1) {
       return "Koyu";
     } else {
-      return "yok :D";
+      return "Açık";
     }
+  }
+
+  Future<void> clearTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    print("TEMA SİLİNDİ");
   }
 }

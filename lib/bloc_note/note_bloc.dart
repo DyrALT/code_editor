@@ -14,7 +14,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     if (event is FetchNoteEvent) {
       yield NoteLoadingState();
       try {
-        yield NoteLoaded(note: Note());
+        yield NoteLoadedState(note: Note());
       } catch (e) {
         yield NoteErorState();
       }
