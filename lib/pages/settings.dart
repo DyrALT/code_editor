@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:note_code/bloc_tema/Tema_bloc.dart';
 import 'package:note_code/bloc_tema/Tema_events.dart';
+import 'package:note_code/models/Note.dart';
 import 'package:note_code/pages/login.dart';
 import 'package:note_code/utils/locator.dart';
 import 'package:note_code/utils/utils.dart';
@@ -67,11 +68,10 @@ class _SettingsState extends State<Settings> {
                     temaBloc.theme = temaBloc.light;
                     print("çıkış yapıldı*****************************");
 
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => Login()),
-                  (r) => false);
-   
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => Login()),
+                        (r) => false);
                   },
                   label: Text('Çıkış yap'),
                   style: TextButton.styleFrom(
@@ -79,7 +79,9 @@ class _SettingsState extends State<Settings> {
                   ),
                   icon: const Icon(Icons.logout)),
               TextButton.icon(
-                  onPressed: oku,
+                  onPressed: () async {
+                    var x = await oku();
+                  },
                   label: Text('Selam'),
                   style: TextButton.styleFrom(
                     textStyle: TextStyle(fontSize: 15),
@@ -90,24 +92,8 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  Future<void> oku() async {
-    // FirebaseFirestore.instance
-    // .collection('users')
-    // .get()
-    // .then((QuerySnapshot querySnapshot) {
-    //     querySnapshot.docs.forEach((doc) {
-    //         print(doc["email"]);
-    //     });
-    // });
-    _firestore
-        .collection('users')
-        .where("email", isEqualTo: _auth.currentUser!.email)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        print(doc["email"]);
-      });
-    });
+  Note not = Note();
+  oku() async {
+    not.getNotes();
   }
-  
 }

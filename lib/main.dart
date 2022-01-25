@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_code/bloc_note/note_bloc.dart';
 import 'package:note_code/bloc_tema/Tema_events.dart';
+import 'package:note_code/models/Code.dart';
+import 'package:note_code/models/Note.dart';
 import 'package:note_code/models/themes.dart';
 import 'package:note_code/pages/login.dart';
 import 'package:note_code/pages/new_code.dart';
@@ -26,6 +30,7 @@ void main() async {
 final utils = Utils();
 final TemaBloc temaBloc = locator.get<TemaBloc>();
 FirebaseAuth _auth = FirebaseAuth.instance;
+Note not = Note();
 
 x() async {
   var x = await utils.getTheme();
@@ -61,7 +66,7 @@ class _SplashScrenState extends State<SplashScren> {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-        seconds: 5,
+        seconds: 3,
         navigateAfterSeconds: AuthController(),
         title: new Text('Code Editor Yükleniyor'),
         backgroundColor: Colors.white,
@@ -107,46 +112,68 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text("Code Editor ",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.italic)),
-          IconButton(
-              onPressed: () {
-                // temaBloc.temaEventSink.add(TemaDegistirEvent());
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Settings()));
-              },
-              icon: Icon(Icons.settings)),
-        ]),
-      ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => NewCode()));
-          }),
-      body: ListView(
-        children: [
-          Cards(title: "deneme"),
-          Cards(title: "Main code"),
-          Cards(title: "classlarım"),
-          Cards(title: "1"),
-          Cards(title: "2"),
-          Cards(title: "3"),
-          Cards(title: "4"),
-          Cards(title: "5"),
-          Cards(title: "6"),
-        ],
-      ),
-    );
+        appBar: AppBar(
+          title:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text("Code Editor ",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.italic)),
+            IconButton(
+                onPressed: () {
+                  // temaBloc.temaEventSink.add(TemaDegistirEvent());
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Settings()));
+                },
+                icon: Icon(Icons.settings)),
+          ]),
+        ),
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => NewCodeQuestion()));
+            }),
+        body: FutureBuilder(
+          future: not.getNotes(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return RefreshIndicator(
+                  onRefresh: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        PageRouteBuilder(
+                            pageBuilder: (a, b, c) => MyApp(),
+                            transitionDuration: Duration(seconds: 0)),
+                        (r) => false);
+                    return Future.value(false);
+                  },
+                  child: ListView.builder(
+                    itemCount: (snapshot.data as List).length,
+                    itemBuilder: (context, index) {
+                      return Cards(
+                        title: (snapshot.data as List)[index].title,
+                      );
+                    },
+                  ));
+            }
+            return Scaffold(
+                body: Center(
+              child: CircularProgressIndicator(),
+            ));
+          },
+        ));
   }
 }

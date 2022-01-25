@@ -13,7 +13,8 @@ class NoteLoadingState extends NoteState {}
 
 class NoteLoadedState extends NoteState {
   late final Note note;
-  NoteLoadedState({required this.note});
+  List<Note> list = [];
+  NoteLoadedState({required this.list});
 }
 
 class NoteErorState extends NoteState {}

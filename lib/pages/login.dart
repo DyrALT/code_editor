@@ -214,7 +214,7 @@ class _LoginState extends State<Login> {
                                   ),
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.center,
-                              )),
+                              )), 
                               SizedBox(height: 20),
                               Container(
                                   height: 50,
@@ -232,25 +232,6 @@ class _LoginState extends State<Login> {
                                           BorderRadius.all(Radius.circular(30)),
                                     ))),
                                     onPressed: _emailSifreGiris,
-                                  )),
-                              Container(
-                                  height: 50,
-                                  width:
-                                      MediaQuery.of(context).size.width - 150,
-                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  child: ElevatedButton(
-                                    child: Text('poop',
-                                        style: TextStyle(fontSize: 20)),
-                                    style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(30)),
-                                    ))),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
                                   )),
                               SizedBox(height: 50),
                               Padding(
