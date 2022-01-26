@@ -232,10 +232,11 @@ class _NewCodeState extends State<NewCode> {
             Text(widget.title),
             IconButton(
                 onPressed: () {
+                  String lang = utils.setLangugage(widget.lanugage);
                   _firestore.collection("notes").add({
                     "title": widget.title,
                     "content": _codeController?.text,
-                    "language": widget.lanugage.aliases[0]
+                    "language": lang,
                   }).then((value) async {
                     var id = value.id; //not id
                     var user = await _firestore

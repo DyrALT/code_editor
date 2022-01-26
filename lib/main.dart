@@ -141,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ]),
         ),
         floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
+            child: Icon(Icons.add),   
             onPressed: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => NewCodeQuestion()));
@@ -165,6 +165,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     itemBuilder: (context, index) {
                       return Cards(
                         title: (snapshot.data as List)[index].title,
+                        content: (snapshot.data as List)[index].content,
+                        language: (snapshot.data as List)[index].language,
                       );
                     },
                   ));
