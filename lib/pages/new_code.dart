@@ -6,7 +6,6 @@ import 'package:note_code/bloc_tema/Tema_bloc.dart';
 import 'package:note_code/models/Code.dart';
 import 'package:note_code/models/languages.dart';
 import 'package:note_code/main.dart';
-import 'package:note_code/models/themes.dart';
 import 'package:note_code/utils/locator.dart';
 
 class NewCodeQuestion extends StatefulWidget {
@@ -207,7 +206,6 @@ class _NewCodeState extends State<NewCode> {
     super.initState();
     final source = """
 """;
-    // Instantiate the CodeController
     _codeController = CodeController(
       text: source,
       language: widget.lanugage,

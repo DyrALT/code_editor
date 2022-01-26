@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:note_code/bloc_tema/Tema_bloc.dart';
 import 'package:note_code/main.dart';
-import 'package:note_code/models/languages.dart';
 import 'package:note_code/utils/locator.dart';
 import 'package:note_code/utils/utils.dart';
 

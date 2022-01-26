@@ -62,7 +62,6 @@ class Login extends StatefulWidget {
 }
 
 FirebaseAuth _auth = FirebaseAuth.instance;
-// final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class _LoginState extends State<Login> {
   var formKey = GlobalKey<FormState>();
@@ -71,12 +70,7 @@ class _LoginState extends State<Login> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-    //   if (_auth.currentUser != null) {
-    //     Navigator.pushReplacement(
-    //         context, MaterialPageRoute(builder: (context) => MyApp()));
-    //   }
-    // });
+
   }
 
   bool _isLoading = false;
@@ -259,7 +253,6 @@ class _LoginState extends State<Login> {
                                     ],
                                   ),
 
-                                  // by onpressed we call the function signup function
                                 ),
                               )
                             ],
