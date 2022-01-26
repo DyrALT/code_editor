@@ -9,10 +9,10 @@ import 'package:note_code/pages/register.dart';
 import 'package:note_code/utils/auth.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:the_validator/the_validator.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 AuthService authService = AuthService();
-// final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class AuthController extends StatefulWidget {
   const AuthController({Key? key}) : super(key: key);
@@ -211,7 +211,7 @@ class _LoginState extends State<Login> {
                                   ),
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.center,
-                              )), 
+                              )),
                               SizedBox(height: 20),
                               Container(
                                   height: 50,
@@ -350,6 +350,22 @@ class _LoginState extends State<Login> {
         idToken: googleAuth.idToken,
       );
       await _auth.signInWithCredential(credential);
+      var userId = _auth.currentUser!.uid;
+      try {
+        var user = await _firestore.collection("users").doc(userId).get();
+        var x = user.data();
+        if (x!.isEmpty) {
+          print("X BOŞ");
+        }
+      } catch (e) {
+        print("GOOGLE İLE GİRİŞ YAPAMADI ENAİ");
+        _firestore.collection("users").doc(_auth.currentUser!.uid).set({
+          "id": _auth.currentUser!.uid,
+          "email": _auth.currentUser!.email,
+          "notes": []
+        });
+        print("KAYIT EKLENDİ HADİ BAKALAIM");
+      }
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) => MyApp()), (r) => false);
     } catch (e) {

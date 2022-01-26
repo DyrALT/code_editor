@@ -250,12 +250,12 @@ class _NewCodeState extends State<NewCode> {
                         .doc(_auth.currentUser!.uid)
                         .update({"notes": notlistesi});
                   });
-
+                  
                   Navigator.pushAndRemoveUntil(
                       context,
                       PageRouteBuilder(
                           pageBuilder: (a, b, c) => MyApp(),
-                          transitionDuration: Duration(seconds: 0)),
+                          transitionDuration: Duration(seconds: 2)),
                       (r) => false);
                 },
                 icon: Icon(Icons.check)),

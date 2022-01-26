@@ -71,7 +71,7 @@ class _DetailsState extends State<Details> {
                     context,
                     PageRouteBuilder(
                         pageBuilder: (a, b, c) => MyApp(),
-                        transitionDuration: Duration(seconds: 0)),
+                        transitionDuration: Duration(seconds: 1)),
                     (r) => false);
               },
               icon: Icon(Icons.check)),
