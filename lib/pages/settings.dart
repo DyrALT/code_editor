@@ -61,39 +61,28 @@ class _SettingsState extends State<Settings> {
                       });
                     },
                   )),
-              TextButton.icon(
-                  onPressed: () async {
-                    await _auth.signOut();
-                    await utils.clearTheme();
-                    temaBloc.theme = temaBloc.light;
-                    print("çıkış yapıldı*****************************");
-
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => Login()),
-                        (r) => false);
-                  },
-                  label: Text('Çıkış yap'),
-                  style: TextButton.styleFrom(
-                    textStyle: TextStyle(fontSize: 15),
+              Container(
+                  padding: EdgeInsets.fromLTRB(0, 0, 100, 0),
+                  child: 
+                    TextButton.icon(
+                        onPressed: () async {
+                          await _auth.signOut();
+                          await utils.clearTheme();
+                          temaBloc.theme = temaBloc.light;
+                          print("çıkış yapıldı*****************************");
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => Login()),
+                              (r) => false);
+                        },
+                        label: Text('Çıkış yap'),
+                        style: TextButton.styleFrom(
+                          textStyle: TextStyle(fontSize: 15),
+                        ),
+                        icon: const Icon(Icons.logout)),
                   ),
-                  icon: const Icon(Icons.logout)),
-              TextButton.icon(
-                  onPressed: () async {
-                    var x = await oku();
-                  },
-                  label: Text('Selam'),
-                  style: TextButton.styleFrom(
-                    textStyle: TextStyle(fontSize: 15),
-                  ),
-                  icon: const Icon(Icons.logout)),
             ],
           )),
     );
-  }
-
-  Note not = Note();
-  oku() async {
-    not.getNotes();
   }
 }

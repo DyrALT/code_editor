@@ -129,11 +129,6 @@ class _NewCodeQuestionState extends State<NewCodeQuestion> {
           children: [
             TextFormField(
               controller: _title,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "Doldurulması Zorunludur";
-                }
-              },
               decoration: const InputDecoration(
                 icon: const Icon(Icons.text_snippet_outlined),
                 hintText: 'Kod başlığını giriniz',
@@ -169,11 +164,17 @@ class _NewCodeQuestionState extends State<NewCodeQuestion> {
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
               ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => NewCode(
-                              title: _title!.text,
-                              lanugage: _dropDownItemModel.dil,
-                            )));
+                    if (_title!.text == "") {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("Lütfen Not Başlığı Girin"),
+                      ));
+                    } else {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => NewCode(
+                                title: _title!.text,
+                                lanugage: _dropDownItemModel.dil,
+                              )));
+                    }
                   },
                   child: Text("İLERLE"))
             ])
@@ -201,12 +202,10 @@ FirebaseFirestore _firestore = FirebaseFirestore.instance;
 class _NewCodeState extends State<NewCode> {
   CodeController? _codeController;
 
-  var language = java;
   @override
   void initState() {
     super.initState();
     final source = """
-
 """;
     // Instantiate the CodeController
     _codeController = CodeController(
@@ -249,13 +248,15 @@ class _NewCodeState extends State<NewCode> {
                     _firestore
                         .collection("users")
                         .doc(_auth.currentUser!.uid)
-                        .update({
-                          "notes": notlistesi
-                        });
+                        .update({"notes": notlistesi});
                   });
 
-                  Navigator.pop(context,
-                      MaterialPageRoute(builder: (context) => MyApp()));
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (a, b, c) => MyApp(),
+                          transitionDuration: Duration(seconds: 0)),
+                      (r) => false);
                 },
                 icon: Icon(Icons.check)),
           ],

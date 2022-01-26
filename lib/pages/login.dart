@@ -65,10 +65,7 @@ FirebaseAuth _auth = FirebaseAuth.instance;
 // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class _LoginState extends State<Login> {
-  var formKeyHatirla = GlobalKey<FormState>();
   var formKey = GlobalKey<FormState>();
-  var formKeyPhone = GlobalKey<FormState>();
-  var formKeySmsCode = GlobalKey<FormState>();
   AuthService authService = AuthService();
   @override
   void initState() {
