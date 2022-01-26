@@ -1,9 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:note_code/bloc_note/note_bloc.dart';
-import 'package:note_code/bloc_tema/Tema_events.dart';
-import 'package:note_code/models/Code.dart';
 import 'package:note_code/models/Note.dart';
 import 'package:note_code/models/themes.dart';
 import 'package:note_code/pages/login.dart';
